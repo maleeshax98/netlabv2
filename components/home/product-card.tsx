@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import QuickView from "../products/QuickView";
 
 export function ProductCard({ product }) {
   // const discountedPrice =
@@ -101,13 +102,7 @@ export function ProductCard({ product }) {
           </div>
 
           <div className="flex flex-wrap gap-2 w-full font-sans">
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 rounded-lg font-bold gap-2 text-xs p-5"
-            >
-              <Eye className="h-4 w-4" /> Quick View
-            </Button>
+            <QuickView data={product} />
             <Button
               size="sm"
               disabled={isOutOfStock}
