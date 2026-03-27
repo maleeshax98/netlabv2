@@ -98,9 +98,7 @@ const EditProductForm = ({
         <Card className="border-0 shadow-none p-5">
           <CardHeader className="px-0 pt-0">
             <CardTitle>Edit Product: {data?.name}</CardTitle>
-            <CardDescription>
-              Update your product details below
-            </CardDescription>
+            <CardDescription>Update your product details below</CardDescription>
           </CardHeader>
           <CardContent className="px-0">
             <div className="my-4">
@@ -182,7 +180,7 @@ const EditProductForm = ({
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Categories</SelectLabel>
-                      {categories?.categories?.map((category: any) => (
+                      {categories?.map((category: any) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>
@@ -227,7 +225,7 @@ const EditProductForm = ({
                   type="button"
                   className="cursor-pointer"
                 >
-                  <PlusCircle className="mr-2 h-4 w-4 hidden sm:block"/> Add
+                  <PlusCircle className="mr-2 h-4 w-4 hidden sm:block" /> Add
                 </Button>
               </div>
             </div>
@@ -310,10 +308,19 @@ const EditProductForm = ({
             </div>
           </CardContent>
           <CardFooter className="flex-col sm:flex-row gap-3 px-0 pb-0 mt-6">
-            <Button type="submit" className="w-full sm:flex-1" disabled={isPending}>
+            <Button
+              type="submit"
+              className="w-full sm:flex-1"
+              disabled={isPending}
+            >
               {isPending ? "Updating..." : "Update Product"}
             </Button>
-            <Button variant="outline" type="button" onClick={() => setOpen(false)} className="w-full sm:flex-1">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => setOpen(false)}
+              className="w-full sm:flex-1"
+            >
               Cancel
             </Button>
           </CardFooter>

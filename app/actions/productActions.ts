@@ -1,4 +1,5 @@
 "use server";
+import { prisma } from "@/lib/prisma";
 import { CategorySchema, ProductSchema } from "@/lib/zodSchemas";
 import axios from "axios";
 import { refresh } from "next/cache";
@@ -33,31 +34,26 @@ export async function createPost(
       };
     }
 
-    const response = await fetch(
-      `${process.env.BASE_URL}/api/products/create`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          price,
-          stock,
-          category,
-          images: extraData.images,
-          specifications: extraData.specifications,
-        }),
+    const product = await prisma.product.create({
+      data: {
+        name,
+        description,
+        price,
+        stock,
+        categoryId: category,
+        images: extraData.images,
+        specifications: extraData.specifications,
+        reserved: 0,
       },
-    );
+    });
 
-    if (!response.ok) {
-      throw new Error("Failed to create product");
+    if (!product) {
+      return {
+        message: "Product created successfully",
+        status: "success",
+      };
     }
 
-    const data = await response.json();
-    console.log(data);
     refresh();
     return {
       message: "Product created successfully",
@@ -107,32 +103,41 @@ export async function editProduct(
         status: "error",
       };
     }
-
-    const response = await fetch(
-      `${process.env.BASE_URL}/api/products/edit/${extraData.id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          price,
-          stock,
-          category,
-          images: extraData.images,
-          specifications: extraData.specifications,
-        }),
+    const productExists = await prisma.product.findUnique({
+      where: {
+        id: extraData.id,
       },
-    );
+    });
 
-    if (!response.ok) {
-      throw new Error("Failed to update product");
+    if (!productExists) {
+      return {
+        message: "Product not found",
+        status: "error",
+      };
     }
 
-    const data = await response.json();
-    console.log(data);
+    const product = await prisma.product.update({
+      where: {
+        id: extraData.id,
+      },
+      data: {
+        name,
+        description,
+        price,
+        stock,
+        categoryId: category,
+        images: extraData.images,
+        specifications: extraData.specifications,
+      },
+    });
+
+    if (!product) {
+      return {
+        message: "Product updated failed",
+        status: "error",
+      };
+    }
+
     refresh();
     return {
       message: "Product updated successfully",
@@ -173,27 +178,17 @@ export async function createCategory(previousState, formData: FormData) {
   }
 
   try {
-    const response = await fetch(
-      `${process.env.BASE_URL}/api/categories/create`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          slug,
-        }),
+    const category = await prisma.category.create({
+      data: {
+        name,
+        slug,
       },
-    );
+    });
 
-    const data = await response.json();
-    console.log(data);
-
-    if (!response.ok) {
+    if (!category) {
       return {
-        message: data.message,
-        status: "error",
+        message: "Category created successfully",
+        status: "success",
       };
     }
 
@@ -219,39 +214,64 @@ export async function createCategory(previousState, formData: FormData) {
   }
 }
 
-export async function getAllCategories() {
+// export async function getAllCategories() {
+//   try {
+//     const response = await fetch(`${process.env.BASE_URL}/api/categories`);
+
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch categories");
+//     }
+
+//     const data = await response.json();
+//     return {
+//       categories: data.categories,
+//       status: "success",
+//     };
+//   } catch (error) {
+//     console.log(error);
+//     return {
+//       message: "Category Fetching faild",
+//       status: "error",
+//     };
+//   }
+// }
+
+// export async function getAllProducts() {
+//   try {
+//     const response = await fetch(`${process.env.BASE_URL}/api/products`);
+
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch products");
+//     }
+
+//     const data = await response.json();
+//     return {
+//       products: data.products,
+//       status: "success",
+//     };
+//   } catch (error) {
+//     console.log(error);
+//     return {
+//       message: "Product Fetching faild",
+//       status: "error",
+//     };
+//   }
+// }
+
+export async function getProduct(id: string) {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/categories`);
+    const product = await prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch categories");
-    }
-
-    const data = await response.json();
-    return {
-      categories: data.categories,
-      status: "success",
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      message: "Category Fetching faild",
-      status: "error",
-    };
-  }
-}
-
-export async function getAllProducts() {
-  try {
-    const response = await fetch(`${process.env.BASE_URL}/api/products`);
-
-    if (!response.ok) {
+    if (!product) {
       throw new Error("Failed to fetch products");
     }
 
-    const data = await response.json();
     return {
-      products: data.products,
+      product,
       status: "success",
     };
   } catch (error) {
@@ -263,17 +283,36 @@ export async function getAllProducts() {
   }
 }
 
-export async function getProduct(id: string) {
+export async function deleteProduct(prevState, id: string) {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/products/${id}`);
 
-    if (!response.ok) {
+    const product = await prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!product) {
       throw new Error("Failed to fetch products");
     }
 
-    const data = await response.json();
+    const deleteProduct = await prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+
+    if (!deleteProduct) {
+      return {
+        message: "Product deletion faild",
+        status: "error",
+      };
+    }
+
+    refresh();
+
     return {
-      product: data.product,
+      message: "Product deleted successfully",
       status: "success",
     };
   } catch (error) {

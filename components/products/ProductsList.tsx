@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Eye, Edit } from "lucide-react";
 import ViewProduct from "./ViewProduct";
 import { useRouter } from "next/navigation";
+import DeleteProduct from "./DeleteProduct";
 
 export interface Product {
   id: string;
@@ -101,6 +102,7 @@ const ProductsList = ({ products }: { products: Product[] }) => {
                         }
                       />
                     </button>
+                    <DeleteProduct data={product} />
                   </div>
                 </TableCell>
               </TableRow>

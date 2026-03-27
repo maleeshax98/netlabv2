@@ -40,7 +40,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Form from "next/form";
 import CreateCategory from "./CreateCategory";
 
-const CreateProductForm = ({ categories, setOpen }: { categories: any[]; setOpen: (open: boolean) => void }) => {
+const CreateProductForm = ({
+  categories,
+  setOpen,
+}: {
+  categories: any[];
+  setOpen: (open: boolean) => void;
+}) => {
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
 
@@ -181,7 +187,7 @@ const CreateProductForm = ({ categories, setOpen }: { categories: any[]; setOpen
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Categories</SelectLabel>
-                      {categories?.categories?.map((category) => (
+                      {categories?.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>
@@ -315,7 +321,12 @@ const CreateProductForm = ({ categories, setOpen }: { categories: any[]; setOpen
             <Button type="submit" className="w-full" disabled={isPending}>
               {isPending ? "Creating..." : "Create Product"}
             </Button>
-            <Button variant="outline" type="button" onClick={() => setOpen(false)} className="w-full">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => setOpen(false)}
+              className="w-full"
+            >
               Cancel
             </Button>
           </CardFooter>

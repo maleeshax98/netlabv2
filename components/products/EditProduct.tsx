@@ -23,6 +23,7 @@ const EditProduct = ({ categories }: { categories: any }) => {
     if (id) {
       const fetchProduct = async () => {
         const response = await getProduct(id);
+        console.log(response);
         if (response.product) {
           setData(response.product);
           setOpen(true);
