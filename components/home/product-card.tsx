@@ -100,7 +100,7 @@ export function ProductCard({ product }) {
             </span>
           </div>
 
-          <div className="flex gap-2 w-full font-sans">
+          <div className="flex flex-wrap gap-2 w-full font-sans">
             <Button
               variant="outline"
               size="sm"
