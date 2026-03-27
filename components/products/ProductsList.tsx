@@ -98,7 +98,7 @@ const ProductsList = ({ products }: { products: Product[] }) => {
                       <Edit
                         className="w-4 h-4"
                         onClick={() =>
-                          router.push(`/products?id=${product.id}`)
+                          router.push(`/admin/products?id=${product.id}`)
                         }
                       />
                     </button>

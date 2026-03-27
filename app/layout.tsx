@@ -8,6 +8,10 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { Navbar } from "@/components/home/navbar";
+import { Footer } from "@/components/home/footer";
+import Lenis from "lenis";
+import SmoothScroll from "@/components/home/SmoothScroll";
 const fontSans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -35,7 +39,13 @@ export default function RootLayout({
           <SidebarProvider>
             <TooltipProvider>
               {/* <AppSidebar /> */}
+              {/* <div className="relative flex justify-center items-center min-h-screen flex-col"> */}
+              {/* <SmoothScroll> */}
+              {/* <Navbar /> */}
               {children}
+              {/* <Footer /> */}
+              {/* </SmoothScroll> */}
+              {/* </div> */}
               <Toaster />
             </TooltipProvider>
           </SidebarProvider>

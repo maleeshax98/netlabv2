@@ -1,12 +1,27 @@
-import { ModeToggle } from "@/components/ModeToggle";
-import Image from "next/image";
+import { Navbar } from "@/components/home/navbar";
+import { PromotionalHero } from "@/components/home/promotional-hero";
+import React from "react";
+import Test from "@/components/home/test";
+import { CategoryShowcase } from "@/components/home/category-showcase";
+import { FaqSection } from "@/components/home/faq-section";
+import { FeaturedProducts } from "@/components/home/featured-products";
+import { TestimonialsSection } from "@/components/home/testimonials-section";
+import ExclusiveSection from "@/components/home/exclusive-section";
 
-export default function Home() {
+const page = () => {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center ">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16  sm:items-start">
-        <ModeToggle />
-      </main>
-    </div>
+    <main className="flex flex-col flex-1 w-full max-w-7xl mx-auto p-5 gap-6">
+      <div>
+        <Navbar />
+        <PromotionalHero />
+        <FeaturedProducts />
+        <TestimonialsSection />
+        <ExclusiveSection />
+        <CategoryShowcase />
+        <FaqSection />
+      </div>
+    </main>
   );
-}
+};
+
+export default page;

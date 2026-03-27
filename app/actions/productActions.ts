@@ -16,6 +16,8 @@ export async function createPost(
   const price = parseFloat(String(formData.get("price")));
   const stock = parseInt(String(formData.get("stock")));
   const category = String(formData.get("category"));
+  const isFeatured = formData.get("isFeatured") === "on";
+  const isProductByNET = formData.get("isProductByNET") === "on";
   try {
     const result = ProductSchema.safeParse({
       name,
@@ -44,6 +46,8 @@ export async function createPost(
         images: extraData.images,
         specifications: extraData.specifications,
         reserved: 0,
+        isFeatured,
+        isProductByNET,
       },
     });
 
@@ -86,6 +90,8 @@ export async function editProduct(
   const price = parseFloat(String(formData.get("price")));
   const stock = parseInt(String(formData.get("stock")));
   const category = String(formData.get("category"));
+  const isFeatured = formData.get("isFeatured") === "on";
+  const isProductByNET = formData.get("isProductByNET") === "on";
   try {
     const result = ProductSchema.safeParse({
       name,
@@ -128,6 +134,8 @@ export async function editProduct(
         categoryId: category,
         images: extraData.images,
         specifications: extraData.specifications,
+        isFeatured,
+        isProductByNET,
       },
     });
 
@@ -285,7 +293,6 @@ export async function getProduct(id: string) {
 
 export async function deleteProduct(prevState, id: string) {
   try {
-
     const product = await prisma.product.findUnique({
       where: {
         id,
@@ -322,4 +329,20 @@ export async function deleteProduct(prevState, id: string) {
       status: "error",
     };
   }
+}
+
+export async function getFeaturedCategories() {
+  const catos = await prisma.category.findMany({
+    include: {
+      products: {
+        take: 4,
+        include: {
+          category: true,
+        },
+      },
+    },
+    take: 6,
+  });
+
+  return catos;
 }

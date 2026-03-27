@@ -39,6 +39,7 @@ import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Form from "next/form";
 import CreateCategory from "./CreateCategory";
+import { Switch } from "@/components/ui/switch";
 
 const CreateProductForm = ({
   categories,
@@ -108,7 +109,7 @@ const CreateProductForm = ({
               Enter your product details below to create a new product
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className=" overflow-scroll">
             <div className="my-4">
               {state.status === "error" && (
                 <Alert variant="destructive" className="max-w-md">
@@ -314,6 +315,17 @@ const CreateProductForm = ({
                     );
                   }}
                 </CldUploadWidget>
+              </div>
+
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center space-x-2">
+                  <Switch id="isFeatured" name="isFeatured" />
+                  <Label htmlFor="isFeatured">Featured</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch id="isProductByNET" name="isProductByNET" />
+                  <Label htmlFor="isProductByNET">Product By NET</Label>
+                </div>
               </div>
             </div>
           </CardContent>

@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Form from "next/form";
 import CreateCategory from "./CreateCategory";
+import { Switch } from "../ui/switch";
 
 const EditProductForm = ({
   data,
@@ -304,6 +305,24 @@ const EditProductForm = ({
                     );
                   }}
                 </CldUploadWidget>
+              </div>
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="isFeatured"
+                    name="isFeatured"
+                    defaultChecked={data?.isFeatured}
+                  />
+                  <Label htmlFor="isFeatured">Featured</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="isProductByNET"
+                    name="isProductByNET"
+                    defaultChecked={data?.isProductByNET}
+                  />
+                  <Label htmlFor="isProductByNET">Product By NET</Label>
+                </div>
               </div>
             </div>
           </CardContent>

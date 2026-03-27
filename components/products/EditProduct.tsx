@@ -39,7 +39,7 @@ const EditProduct = ({ categories }: { categories: any }) => {
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
     if (!isOpen) {
-      router.push("/products");
+      router.push("/admin/products");
     }
   };
 
