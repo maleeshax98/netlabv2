@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { refresh } from "next/cache";
 
 export async function addToCart(prev: any, productId: string) {
   try {
@@ -158,6 +159,8 @@ export async function addToCart(prev: any, productId: string) {
         },
       },
     });
+
+    refresh();
 
     if (cart) {
       return {

@@ -4,7 +4,7 @@ import { prisma } from "../prisma";
 
 export async function getProducts(search?: string, category?: string) {
   const filters: any = {};
-
+  console.log("called getProducts function");
   // Search filter
   if (search?.trim()) {
     filters.name = {

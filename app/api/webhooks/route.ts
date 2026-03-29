@@ -39,6 +39,9 @@ export async function POST(req: NextRequest) {
           where: {
             clerkId: id,
           },
+          select: {
+            id: true,
+          },
         });
         if (!userExists) {
           return new Response("User not found", { status: 404 });
@@ -62,6 +65,9 @@ export async function POST(req: NextRequest) {
         const userExists = await prisma.user.findFirst({
           where: {
             clerkId: id,
+          },
+          select: {
+            id: true,
           },
         });
         if (!userExists) {

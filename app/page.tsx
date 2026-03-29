@@ -12,7 +12,7 @@ const page = () => {
   return (
     <main className="flex flex-col flex-1 w-full max-w-7xl mx-auto p-5 gap-6">
       <div>
-        <Navbar />
+        {/* <Navbar /> */}
         <PromotionalHero />
         <FeaturedProducts />
         <TestimonialsSection />

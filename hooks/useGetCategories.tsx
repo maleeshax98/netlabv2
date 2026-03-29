@@ -2,7 +2,7 @@
 import { fetchAPI } from "@/lib/fetch";
 import { useState, useEffect } from "react";
 
-export const useGetProducts = (search, category) => {
+export const useGetCategories = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -11,16 +11,9 @@ export const useGetProducts = (search, category) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const params = new URLSearchParams();
-        if (search) params.append("search", search);
-        if (category) params.append("category", category);
+        const result = await fetchAPI(`/api/categories`);
 
-        // const response = await fetch(`/api/products?${params.toString()}`);
-
-        // const result = await response.json();
-        const result = await fetchAPI(`/api/products?${params.toString()}`);
-
-        setData(result.products);
+        setData(result.categories);
       } catch (err: any) {
         console.error(err);
 
@@ -31,7 +24,7 @@ export const useGetProducts = (search, category) => {
     };
 
     fetchData();
-  }, [search, category]);
+  }, []);
 
   return { data, loading, error };
 };

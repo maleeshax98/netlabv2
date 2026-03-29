@@ -1,17 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-
 import ProductsCatalog from "@/components/products/ProductsCatalog";
-import { prisma } from "@/lib/prisma";
-import { Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  getAllCategories,
-  getProducts,
-} from "@/lib/products/productsFunctions";
-import { Navbar } from "@/components/home/navbar";
-import { Input } from "@/components/ui/input";
+import { useGetProducts } from "@/hooks/useGetProducts";
+import { toast } from "sonner";
+import { useGetCategories } from "@/hooks/useGetCategories";
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
@@ -19,33 +13,34 @@ export default function ProductsPage() {
   const search = searchParams.get("search");
   const category = searchParams.get("category");
 
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const {
+    data: products,
+    loading: loadingProducts,
+    error,
+  } = useGetProducts(search, category);
+
+  const {
+    data: categories,
+    loading: loadingCategories,
+    error: categoriesError,
+  } = useGetCategories();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      const categories = await getAllCategories();
-      setCategories(categories);
-    };
-    fetchCategories();
-    const fetchProducts = async () => {
-      const products = await getProducts(search || "", category || "");
-      setProducts(products);
-    };
-    fetchProducts();
-  }, [search, category]);
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
-  console.log(products);
   return (
     <div className="flex flex-col flex-1 w-full max-w-7xl mx-auto p-5 gap-6">
       {/* Catalog Component */}
-      <Navbar />
       <div className="">
         <ProductsCatalog
-          allProducts={products}
-          search={search}
-          category={category}
-          categories={categories}
+          allProducts={products ? products : []}
+          search={search || ""}
+          category={category || ""}
+          categories={categories ? categories : []}
+          loadingProducts={loadingProducts}
         />
       </div>
     </div>

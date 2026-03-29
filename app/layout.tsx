@@ -43,8 +43,14 @@ export default function RootLayout({
               {/* <AppSidebar /> */}
               {/* <div className="relative flex justify-center items-center min-h-screen flex-col"> */}
               {/* <SmoothScroll> */}
-              {/* <Navbar /> */}
-              <ClerkProvider>{children}</ClerkProvider>
+
+              <ClerkProvider>
+                {" "}
+                <div className="w-full flex flex-col">
+                  <Navbar />
+                  {children}
+                </div>
+              </ClerkProvider>
               {/* <Footer /> */}
               {/* </SmoothScroll> */}
               {/* </div> */}

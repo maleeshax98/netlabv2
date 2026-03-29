@@ -21,11 +21,13 @@ const ProductsCatalog = ({
   allProducts,
   search: initialSearch,
   category: initialCategory,
+  loadingProducts,
 }: {
   categories: any[];
   allProducts: any[];
   search: string;
   category: string;
+  loadingProducts: boolean;
 }) => {
   const router = useRouter();
   const [search, setSearch] = useState(initialSearch || "");
@@ -103,7 +105,13 @@ const ProductsCatalog = ({
 
         {/* Product Grid */}
         <main className="flex-1">
-          {allProducts.length === 0 ? (
+          {loadingProducts ? (
+            <div className="flex flex-col items-center justify-center min-h-[400px] border-2 border-dashed rounded-xl">
+              <p className="text-muted-foreground font-medium text-lg">
+                Loading products...
+              </p>
+            </div>
+          ) : !loadingProducts && allProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center min-h-[400px] border-2 border-dashed rounded-xl">
               <p className="text-muted-foreground font-medium text-lg">
                 No products found matching your criteria.
