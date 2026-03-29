@@ -24,6 +24,7 @@ interface DeleteProductProps {
 }
 
 const DeleteProduct = ({ data }: DeleteProductProps) => {
+  
   const [state, dispatchAction, isPending] = useActionState(deleteProduct, {
     status: "",
     message: "",

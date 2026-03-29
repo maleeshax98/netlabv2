@@ -291,7 +291,7 @@ export async function getProduct(id: string) {
   }
 }
 
-export async function deleteProduct(prevState, id: string) {
+export async function deleteProduct(prev: any, id: string) {
   try {
     const product = await prisma.product.findUnique({
       where: {

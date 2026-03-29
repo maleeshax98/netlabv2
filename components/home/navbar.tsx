@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Search, ShoppingCart, User, Cpu } from "lucide-react";
+import { Menu, Search, User, Cpu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { navItems, productCategories } from "@/constants/navbar";
@@ -26,7 +26,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ModeToggle } from "../ModeToggle";
-
+import ShoppingCart from "../ShoppingCart";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import CustomUserButton from "../auth/CustomUserButton";
 export function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -107,28 +109,42 @@ export function Navbar() {
 
         {/* Right: Search & Actions */}
         <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
-          <div className="hidden md:flex relative w-full max-w-sm">
+          {/* <div className="hidden md:flex relative w-full max-w-sm">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search..."
               className="h-9 pl-9 bg-muted/40 focus-visible:bg-background transition-colors"
             />
-          </div>
+          </div> */}
 
           <div className="flex items-center gap-1 md:gap-2">
             <ModeToggle />
 
-            <Button variant="ghost" size="icon" className="hidden xs:flex">
-              <User className="h-5 w-5" />
-            </Button>
+            <div>
+              <header className="flex justify-end items-center p-4 gap-4 h-16">
+                <Show when="signed-out">
+                  <SignInButton oauthFlow="popup">
+                    <Button variant="ghost" size="icon" className="">
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </SignInButton>
+                  {/* <SignUpButton /> */}
+                </Show>
+                <Show when="signed-in">
+                  {/* <UserButton /> */}
+                  <CustomUserButton />
+                </Show>
+              </header>
+            </div>
 
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                0
-              </span>
-            </Button>
+            {/* <Button variant="ghost" size="icon" className="relative">
+
+            </Button> */}
+
+            <div>
+              <ShoppingCart />
+            </div>
 
             {/* Mobile/Tablet Menu */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>

@@ -17,7 +17,7 @@ const page = () => {
         <FeaturedProducts />
         <TestimonialsSection />
         <ExclusiveSection />
-        <CategoryShowcase />
+        {/* <CategoryShowcase /> */}
         <FaqSection />
       </div>
     </main>

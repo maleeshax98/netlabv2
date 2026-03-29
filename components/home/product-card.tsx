@@ -1,12 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { ShoppingCart, Eye, PackageCheck, PackageX } from "lucide-react";
+import {
+  ShoppingCart,
+  Eye,
+  PackageCheck,
+  PackageX,
+  Loader2,
+} from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import QuickView from "../products/QuickView";
+import { useActionState, startTransition, useEffect } from "react";
+import { addToCart } from "@/app/actions/cartActions";
+import { toast } from "sonner";
 
 export function ProductCard({ product }) {
   // const discountedPrice =
@@ -17,6 +26,29 @@ export function ProductCard({ product }) {
   const discountedPrice = product.price;
 
   const isOutOfStock = product.stock - product.reserved === 0;
+
+  const [state, dispatchAction, isPending] = useActionState(addToCart, {
+    message: "",
+    status: "",
+  });
+
+  const addToCartFunc = async () => {
+    startTransition(() => {
+      if (product.id) {
+        dispatchAction(product.id);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (state.status === "success") {
+      toast.success(state.message, { position: "top-center" });
+    }
+
+    if (state.status === "error") {
+      toast.error(state.message, { position: "top-center" });
+    }
+  }, [state, isPending]);
 
   return (
     <Card className="group relative overflow-hidden rounded-2xl border-none bg-card/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1">
@@ -105,10 +137,21 @@ export function ProductCard({ product }) {
             <QuickView data={product} />
             <Button
               size="sm"
-              disabled={isOutOfStock}
+              disabled={isPending}
               className="flex-1 rounded-lg font-bold gap-2 text-xs shadow-lg shadow-primary/10 p-5"
+              onClick={() => {
+                addToCartFunc();
+              }}
             >
-              <ShoppingCart className="h-4 w-4" /> Add
+              {isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Adding...
+                </>
+              ) : (
+                <>
+                  <ShoppingCart className="h-4 w-4" /> Add
+                </>
+              )}
             </Button>
           </div>
         </div>
