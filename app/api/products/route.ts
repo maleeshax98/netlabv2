@@ -17,9 +17,13 @@ export async function GET(request: Request) {
 
   try {
     const products = await prisma.product.findMany({
-      where: filters,
+      where: { ...filters, availableStock: { gt: 0 } },
       include: { category: true },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
+
     return NextResponse.json(
       { products, message: "Products fetched successfully" },
       { status: 200 },

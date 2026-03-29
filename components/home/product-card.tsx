@@ -25,7 +25,7 @@ export function ProductCard({ product }) {
 
   const discountedPrice = product.price;
 
-  const isOutOfStock = product.stock - product.reserved === 0;
+  const isOutOfStock = product.availableStock === 0;
 
   const [state, dispatchAction, isPending] = useActionState(addToCart, {
     message: "",
@@ -94,7 +94,7 @@ export function ProductCard({ product }) {
                 className="bg-background/80 backdrop-blur-sm text-emerald-500 border-emerald-500/20 text-[10px] px-2 py-0"
               >
                 <PackageCheck className="h-3 w-3 mr-1" />{" "}
-                {product.stock - product.reserved} in stock
+                {product.availableStock} in stock
               </Badge>
             )}
           </div>

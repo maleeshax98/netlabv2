@@ -48,6 +48,7 @@ export async function createPost(
         reserved: 0,
         isFeatured,
         isProductByNET,
+        availableStock: stock,
       },
     });
 
@@ -122,6 +123,8 @@ export async function editProduct(
       };
     }
 
+    const stockDiff = stock - (productExists.stock + productExists.reserved);
+
     const product = await prisma.product.update({
       where: {
         id: extraData.id,
@@ -136,6 +139,7 @@ export async function editProduct(
         specifications: extraData.specifications,
         isFeatured,
         isProductByNET,
+        availableStock: stockDiff,
       },
     });
 

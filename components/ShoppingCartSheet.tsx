@@ -22,6 +22,7 @@ const ShoppingCartSheet = ({
   items: any[];
   loading: boolean;
 }) => {
+ 
   return (
     <div>
       <Sheet>

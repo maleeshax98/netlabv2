@@ -12,8 +12,8 @@ export const useGetCart = () => {
       setLoading(true);
       try {
         const result = await fetchAPI(`/api/cart`);
-
-        setData(result.cart);
+        console.log(result);
+        setData(result);
       } catch (err: any) {
         console.error(err);
 

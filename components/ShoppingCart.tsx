@@ -10,10 +10,11 @@ const ShoppingCart = () => {
       toast.error(error);
     }
   }, [error]);
-  
+
+
   return (
     <div>
-      <ShoppingCartSheet items={data.items} loading={loading} />
+      <ShoppingCartSheet items={data?.items} loading={loading} />
     </div>
   );
 };

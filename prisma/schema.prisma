@@ -32,7 +32,8 @@ model Product {
 
   stock Int
   reserved Int @default(0)
-
+  availableStock Int
+  
   isFeatured Boolean @default(false)
   isProductByNET Boolean @default(false)
 
