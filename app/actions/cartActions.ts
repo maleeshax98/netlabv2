@@ -27,103 +27,149 @@ export async function addToCart(prev: any, productId: string) {
 
     const id = user.id;
 
-    const cartExists = await prisma.cart.findFirst({
+    // if (cartExists) {
+    //   const productExists = await prisma.cart.findFirst({
+    //     where: {
+    //       userId: id,
+    //       items: {
+    //         some: {
+    //           productId: productId,
+    //         },
+    //       },
+    //     },
+    //     include: {
+    //       items: {
+    //         where: {
+    //           productId: productId,
+    //         },
+    //       },
+    //     },
+    //   });
+
+    //   if (productExists) {
+    //     const incrementProduct = await prisma.cart.update({
+    //       where: {
+    //         id: cartExists?.id,
+    //         userId: id,
+    //       },
+    //       data: {
+    //         items: {
+    //           update: {
+    //             where: {
+    //               id: productExists?.items[0].id,
+    //               productId: productId,
+    //             },
+    //             data: {
+    //               quantity: {
+    //                 increment: 1,
+    //               },
+    //             },
+    //           },
+    //         },
+    //       },
+
+    //       include: {
+    //         items: true,
+    //       },
+    //     });
+
+    //     return {
+    //       message: "Product added to cart",
+    //       status: "success",
+    //     };
+    //   } else {
+    //     const addProductToCart = await prisma.cart.update({
+    //       where: {
+    //         id: cartExists?.id,
+    //         userId: id,
+    //       },
+    //       data: {
+    //         items: {
+    //           create: [{ productId: productId, quantity: 1 }],
+    //         },
+    //       },
+    //       include: {
+    //         items: true,
+    //         user: true,
+    //       },
+    //     });
+
+    //     return {
+    //       message: "Product added to cart",
+    //       status: "success",
+    //     };
+    //   }
+    // } else {
+    //   const createCart = await prisma.cart.create({
+    //     data: {
+    //       userId: id,
+    //       items: {
+    //         create: [{ productId: productId, quantity: 1 }],
+    //       },
+    //     },
+    //     include: {
+    //       items: true,
+    //       user: true,
+    //     },
+    //   });
+
+    //   return {
+    //     message: "Product added to cart",
+    //     status: "success",
+    //   };
+    // }
+
+    const cart = await prisma.cart.upsert({
       where: {
         userId: id,
       },
-    });
-
-    if (cartExists) {
-      const productExists = await prisma.cart.findFirst({
-        where: {
-          userId: id,
-          items: {
-            some: {
-              productId: productId,
-            },
+      create: {
+        userId: id,
+        items: {
+          create: {
+            productId,
+            quantity: 1,
           },
         },
-        include: {
-          items: {
+      },
+      update: {
+        items: {
+          upsert: {
             where: {
-              productId: productId,
-            },
-          },
-        },
-      });
-
-      if (productExists) {
-        const incrementProduct = await prisma.cart.update({
-          where: {
-            id: cartExists?.id,
-            userId: id,
-          },
-          data: {
-            items: {
-              update: {
-                where: {
-                  id: productExists?.items[0].id,
-                  productId: productId,
-                },
-                data: {
-                  quantity: {
-                    increment: 1,
-                  },
-                },
+              cartId_productId: {
+                cartId:
+                  (
+                    await prisma.cart.findUnique({
+                      where: { userId: user.id },
+                      select: { id: true },
+                    })
+                  )?.id || "",
+                productId,
               },
             },
-          },
-
-          include: {
-            items: true,
-          },
-        });
-
-        return {
-          message: "Product added to cart",
-          status: "success",
-        };
-      } else {
-        const addProductToCart = await prisma.cart.update({
-          where: {
-            id: cartExists?.id,
-            userId: id,
-          },
-          data: {
-            items: {
-              create: [{ productId: productId, quantity: 1 }],
+            update: {
+              quantity: { increment: 1 },
+            },
+            create: {
+              productId,
+              quantity: 1,
             },
           },
-          include: {
-            items: true,
-            user: true,
-          },
-        });
-
-        return {
-          message: "Product added to cart",
-          status: "success",
-        };
-      }
-    } else {
-      const createCart = await prisma.cart.create({
-        data: {
-          userId: id,
-          items: {
-            create: [{ productId: productId, quantity: 1 }],
-          },
         },
-        include: {
-          items: true,
-          user: true,
-        },
-      });
+      },
+    });
 
+    if (cart) {
       return {
         message: "Product added to cart",
         status: "success",
       };
     }
+
+    return {
+      message: "Somthing Went Wrong!",
+      status: "error",
+    };
   } catch (err) {
     console.log(err);
     return {
