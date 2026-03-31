@@ -1,46 +1,26 @@
 import Image from "next/image";
-import React, {
-  startTransition,
-  useActionState,
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Minus, Plus, Trash } from "lucide-react";
-import { updateCart } from "@/app/actions/cartActions";
 import { toast } from "sonner";
+import { useCart } from "@/hooks/useCart";
 
 const CartProductCard = ({ item }: { item: any }) => {
-  console.log(item);
-
   const [quantity, setQuantity] = useState(item.quantity);
 
-  const [state, dispatchAction, isPending] = useActionState(updateCart, {
-    status: "",
-    message: "",
-  });
+  const { updateCart, isUpdating } = useCart();
 
-  const updateCartFunc = async (action: string) => {
-    startTransition(() => {
-      if (item.id) {
-        dispatchAction({
-          cartItemId: item.id,
-          action,
-          productId: item.productId,
-        });
-      }
+  const handleUpdateCart = async (action: string) => {
+    await updateCart({
+      cartItemId: item.id,
+      action,
+      productId: item.productId,
     });
   };
 
   useEffect(() => {
-    if (state.status === "success") {
-      toast.success(state.message, { position: "top-center" });
-    }
-
-    if (state.status === "error") {
-      toast.error(state.message, { position: "top-center" });
-    }
-  }, [state, isPending]);
+    setQuantity(item.quantity);
+  }, [item.quantity]);
 
   return (
     <div>
@@ -70,11 +50,10 @@ const CartProductCard = ({ item }: { item: any }) => {
             <Button
               variant="outline"
               size="icon"
-              disabled={isPending}
               onClick={() => {
-                updateCartFunc("decrement");
-                setQuantity(quantity - 1);
+                handleUpdateCart("decrement");
               }}
+              disabled={isUpdating}
             >
               <Minus className="h-4 w-4" />
             </Button>
@@ -82,11 +61,10 @@ const CartProductCard = ({ item }: { item: any }) => {
             <Button
               variant="outline"
               size="icon"
-              disabled={isPending}
               onClick={() => {
-                updateCartFunc("increment");
-                setQuantity(quantity + 1);
+                handleUpdateCart("increment");
               }}
+              disabled={isUpdating}
             >
               <Plus className="h-4 w-4" />
             </Button>

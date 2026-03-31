@@ -2,19 +2,14 @@ import React, { useEffect, useState } from "react";
 import ShoppingCartSheet from "./ShoppingCartSheet";
 import { useGetCart } from "@/hooks/useGetCart";
 import { toast } from "sonner";
+import { useCart } from "@/hooks/useCart";
 
 const ShoppingCart = () => {
-  const { data, loading, error } = useGetCart();
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
-
+  const { cart, isLoading } = useCart();
 
   return (
     <div>
-      <ShoppingCartSheet items={data?.items} loading={loading} />
+      <ShoppingCartSheet items={cart?.items || []} loading={isLoading} />
     </div>
   );
 };

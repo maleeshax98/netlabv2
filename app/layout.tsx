@@ -13,6 +13,7 @@ import { Footer } from "@/components/home/footer";
 import Lenis from "lenis";
 import SmoothScroll from "@/components/home/SmoothScroll";
 import { ClerkProvider } from "@clerk/nextjs";
+import QueryProvider from "@/components/QueryProvider";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -38,25 +39,27 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <TooltipProvider>
-              {/* <AppSidebar /> */}
-              {/* <div className="relative flex justify-center items-center min-h-screen flex-col"> */}
-              {/* <SmoothScroll> */}
+          <QueryProvider>
+            <SidebarProvider>
+              <TooltipProvider>
+                {/* <AppSidebar /> */}
+                {/* <div className="relative flex justify-center items-center min-h-screen flex-col"> */}
+                {/* <SmoothScroll> */}
 
-              <ClerkProvider>
-                {" "}
-                <div className="w-full flex flex-col">
-                  <Navbar />
-                  {children}
-                </div>
-              </ClerkProvider>
-              {/* <Footer /> */}
-              {/* </SmoothScroll> */}
-              {/* </div> */}
-              <Toaster />
-            </TooltipProvider>
-          </SidebarProvider>
+                <ClerkProvider>
+                  {" "}
+                  <div className="w-full flex flex-col">
+                    <Navbar />
+                    {children}
+                  </div>
+                </ClerkProvider>
+                {/* <Footer /> */}
+                {/* </SmoothScroll> */}
+                {/* </div> */}
+                <Toaster />
+              </TooltipProvider>
+            </SidebarProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

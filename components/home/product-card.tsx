@@ -14,41 +14,19 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import QuickView from "../products/QuickView";
 import { useActionState, startTransition, useEffect } from "react";
-import { addToCart } from "@/app/actions/cartActions";
 import { toast } from "sonner";
+import { useCart } from "@/hooks/useCart";
 
 export function ProductCard({ product }) {
-  // const discountedPrice =
-  //   product.isOnSale && product.discount
-  //     ? product.price * (1 - product.discount / 100)
-  //     : product.price;
+  const { addToCart, isAddingToCart } = useCart();
 
   const discountedPrice = product.price;
 
   const isOutOfStock = product.availableStock === 0;
 
-  const [state, dispatchAction, isPending] = useActionState(addToCart, {
-    message: "",
-    status: "",
-  });
-
-  const addToCartFunc = async () => {
-    startTransition(() => {
-      if (product.id) {
-        dispatchAction(product.id);
-      }
-    });
+  const handleAddToCart = async () => {
+    await addToCart(product.id);
   };
-
-  useEffect(() => {
-    if (state.status === "success") {
-      toast.success(state.message, { position: "top-center" });
-    }
-
-    if (state.status === "error") {
-      toast.error(state.message, { position: "top-center" });
-    }
-  }, [state, isPending]);
 
   return (
     <Card className="group relative overflow-hidden rounded-2xl border-none bg-card/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1">
@@ -137,13 +115,11 @@ export function ProductCard({ product }) {
             <QuickView data={product} />
             <Button
               size="sm"
-              disabled={isPending}
               className="flex-1 rounded-lg font-bold gap-2 text-xs shadow-lg shadow-primary/10 p-5"
-              onClick={() => {
-                addToCartFunc();
-              }}
+              onClick={() => handleAddToCart()}
+              disabled={isAddingToCart}
             >
-              {isPending ? (
+              {isAddingToCart ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" /> Adding...
                 </>

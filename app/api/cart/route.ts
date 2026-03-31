@@ -36,8 +36,6 @@ export async function GET() {
       },
     });
 
-    console.log(cart, "cart");
-
     if (!cart) {
       const cart = await prisma.cart.upsert({
         where: {
