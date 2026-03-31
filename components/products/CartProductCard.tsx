@@ -53,7 +53,7 @@ const CartProductCard = ({ item }: { item: any }) => {
               onClick={() => {
                 handleUpdateCart("decrement");
               }}
-              disabled={isUpdating}
+              disabled={isUpdating || quantity === 1}
             >
               <Minus className="h-4 w-4" />
             </Button>
@@ -64,7 +64,7 @@ const CartProductCard = ({ item }: { item: any }) => {
               onClick={() => {
                 handleUpdateCart("increment");
               }}
-              disabled={isUpdating}
+              disabled={isUpdating || item.product.availableStock <= 0}
             >
               <Plus className="h-4 w-4" />
             </Button>

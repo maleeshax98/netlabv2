@@ -11,7 +11,11 @@ export const useCart = () => {
     return res.data;
   };
 
-  const { data: cart, isLoading } = useQuery({
+  const {
+    data: cart,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["cart"],
     queryFn: getCart,
   });
@@ -46,6 +50,8 @@ export const useCart = () => {
   return {
     cart,
     isLoading,
+    cartFetchError: error,
+
     updateCart: mutation.mutateAsync,
     isUpdating: mutation.isPending,
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, SlidersHorizontal } from "lucide-react"; // Icons for industrial feel
+import { LayoutGrid, List, Search, SlidersHorizontal } from "lucide-react"; // Icons for industrial feel
 import {
   Select,
   SelectContent,
@@ -15,6 +15,7 @@ import {
 import { ProductCard } from "../home/product-card";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "../ui/label";
+import { Checkbox } from "../ui/checkbox";
 
 const ProductsCatalog = ({
   categories,
@@ -103,7 +104,6 @@ const ProductsCatalog = ({
           </div>
         </aside>
 
-        {/* Product Grid */}
         <main className="flex-1">
           {loadingProducts ? (
             <div className="flex flex-col items-center justify-center min-h-[400px] border-2 border-dashed rounded-xl">

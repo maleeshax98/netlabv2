@@ -26,7 +26,7 @@ export async function GET() {
       },
       include: {
         items: {
-          orderBy: { updatedAt: "desc" },
+          orderBy: { createdAt: "desc" },
           include: {
             product: {
               include: { category: true },
@@ -47,7 +47,7 @@ export async function GET() {
         },
         include: {
           items: {
-            orderBy: { updatedAt: "desc" },
+            orderBy: { createdAt: "desc" },
             include: {
               product: {
                 include: { category: true },
