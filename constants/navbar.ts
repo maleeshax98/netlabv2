@@ -15,12 +15,12 @@ export const navItems: NavItem[] = [
   },
   {
     title: "Categories",
-    href: "/categories",
+    href: "/products",
   },
-  {
-    title: "Deals",
-    href: "/deals",
-  },
+  // {
+  //   title: "Deals",
+  //   href: "/deals",
+  // },
   {
     title: "About",
     href: "/about",
@@ -29,37 +29,38 @@ export const navItems: NavItem[] = [
     title: "Contact",
     href: "/contact",
   },
+  
 ];
 
 export const productCategories: NavItem[] = [
   {
     title: "Microcontrollers",
-    href: "/categories/microcontrollers",
+    href: "/products?category=microcontrollers",
     description: "Arduino, ESP32, STM32, and more for your smart projects.",
   },
   {
     title: "Sensors",
-    href: "/categories/sensors",
+    href: "/products?category=sensors",
     description: "Temperature, motion, gas, and distance sensors.",
   },
   {
     title: "Passive Components",
-    href: "/categories/passives",
+    href: "/products?category=passives",
     description: "Resistors, capacitors, and inductors in all values.",
   },
   {
     title: "Power Supply",
-    href: "/categories/power",
+    href: "/products?category=power",
     description: "Batteries, chargers, and voltage regulators.",
   },
   {
     title: "Connectors",
-    href: "/categories/connectors",
+    href: "/products?category=connectors",
     description: "Headers, cables, and terminal blocks.",
   },
   {
     title: "Tools & Equipment",
-    href: "/categories/tools",
+    href: "/products?category=tools",
     description: "Soldering irons, multimeters, and breadboards.",
   },
 ];

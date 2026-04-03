@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import axios from "axios";
 
 export const useProducts = (search: string, category: string) => {
@@ -19,6 +19,8 @@ export const useProducts = (search: string, category: string) => {
   } = useQuery({
     queryKey: ["products", search, category],
     queryFn: () => getProducts(search, category),
+    placeholderData: keepPreviousData,
+    staleTime: 2000,
   });
 
   return { products, loadingProducts: isLoading, productsFetchError: error };

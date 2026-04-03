@@ -30,6 +30,7 @@ export const useCart = () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["cart"] }),
         queryClient.invalidateQueries({ queryKey: ["products"] }),
+        queryClient.invalidateQueries({ queryKey: ["product"] }),
       ]);
 
       console.log(data);
@@ -39,10 +40,10 @@ export const useCart = () => {
   const addToCartMutation = useMutation({
     mutationFn: (productId: string) => addToCart(productId),
     onSuccess: async () => {
-      console.log("Added to cart DB");
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["cart"] }),
         queryClient.invalidateQueries({ queryKey: ["products"] }),
+        queryClient.invalidateQueries({ queryKey: ["product"] }),
       ]);
     },
   });

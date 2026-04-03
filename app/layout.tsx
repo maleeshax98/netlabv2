@@ -44,17 +44,16 @@ export default function RootLayout({
               <TooltipProvider>
                 {/* <AppSidebar /> */}
                 {/* <div className="relative flex justify-center items-center min-h-screen flex-col"> */}
-                {/* <SmoothScroll> */}
-
-                <ClerkProvider>
-                  {" "}
-                  <div className="w-full flex flex-col">
-                    <Navbar />
-                    {children}
-                  </div>
-                </ClerkProvider>
-                {/* <Footer /> */}
-                {/* </SmoothScroll> */}
+                <SmoothScroll>
+                  <ClerkProvider>
+                    {" "}
+                    <div className="w-full flex flex-col">
+                      <Navbar />
+                      {children}
+                    </div>
+                  </ClerkProvider>
+                  {/* <Footer /> */}
+                </SmoothScroll>
                 {/* </div> */}
                 <Toaster />
               </TooltipProvider>

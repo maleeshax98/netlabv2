@@ -50,7 +50,7 @@ const ShoppingCartSheet = ({
             )}
           </div>
           <SheetFooter>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit">Countinue To Bill</Button>
             <SheetClose asChild>
               <Button variant="outline">Close</Button>
             </SheetClose>

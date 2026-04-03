@@ -11,11 +11,9 @@ import {
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import QuickView from "../products/QuickView";
-import { useActionState, startTransition, useEffect } from "react";
-import { toast } from "sonner";
 import { useCart } from "@/hooks/useCart";
+import Link from "next/link";
 
 export function ProductCard({ product }) {
   const { addToCart, isAddingToCart } = useCart();
@@ -81,16 +79,17 @@ export function ProductCard({ product }) {
 
       {/* Product Details */}
       <CardFooter className="flex flex-col items-start gap-4 p-5 pt-2 bg-background/40 backdrop-blur-md">
-        <div className="space-y-1 w-full font-sans">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-            {product.category.name}
-          </p>
-          <h3 className="font-bold text-lg tracking-tight line-clamp-1 group-hover:text-primary transition-colors">
-            {product.name}
-          </h3>
-        </div>
-
-        <div className="flex flex-col w-full gap-4">
+        <div className="flex justify-between gap-5 items-start">
+          <Link href={`products/${product.category.slug}/${product.id}`}>
+            <div className="space-y-1 w-full font-sans">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                {product.category.name}
+              </p>
+              <h3 className="font-bold text-lg tracking-tight line-clamp-1 group-hover:text-primary transition-colors">
+                {product.name}
+              </h3>
+            </div>
+          </Link>
           <div className="flex items-center justify-between font-sans">
             {/* {product.isOnSale ? (
               <div className="flex items-center gap-2">
@@ -110,9 +109,38 @@ export function ProductCard({ product }) {
               Rs.{product.price.toFixed(2)}
             </span>
           </div>
+        </div>
 
+        <div className="flex flex-col w-full gap-4">
           <div className="flex flex-wrap gap-2 w-full font-sans">
+            {/* <Button
+              size="sm"
+              className="flex-1 rounded-lg font-bold gap-2 text-xs p-5 w-full "
+              disabled={isAddingToCart}
+              variant={"outline"}
+            >
+              View Product
+            </Button> */}
+
+            <Button
+              size="sm"
+              onClick={() => handleAddToCart()}
+              disabled={isAddingToCart}
+              className="rounded-md text-xs p-5 flex-1 cursor-pointer"
+            >
+              {isAddingToCart ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Adding...
+                </>
+              ) : (
+                <>
+                  <ShoppingCart className="h-4 w-4" /> Add
+                </>
+              )}
+            </Button>
             <QuickView data={product} />
+          </div>
+          {/* <div className="flex flex-wrap gap-2 w-full font-sans">
             <Button
               size="sm"
               className="flex-1 rounded-lg font-bold gap-2 text-xs shadow-lg shadow-primary/10 p-5"
@@ -129,7 +157,7 @@ export function ProductCard({ product }) {
                 </>
               )}
             </Button>
-          </div>
+          </div> */}
         </div>
       </CardFooter>
     </Card>

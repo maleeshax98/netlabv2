@@ -47,15 +47,31 @@ const ProductsCatalog = ({
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 md:px-6 lg:px-8">
       {/* Header Section */}
-      <div className=" h-full grid grid-cols-1 md:grid-cols-4">
-        <div className="flex flex-col gap-5 p-3 ">
-          <div></div>
-          <div>
-            <div className="flex flex-col gap-5">
-              <div className=" space-y-2">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Catalog</h1>
+          <p className="text-muted-foreground mt-1">
+            Showing {allProducts.length} products
+          </p>
+        </div>
+      </div>
+
+      <div className="flex flex-col  gap-10">
+        <aside className="w-full lg:w-64 space-y-6">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 font-semibold text-sm uppercase tracking-wider text-muted-foreground">
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters
+            </div>
+            <Separator />
+
+            <div className="flex flex-col md:flex-row flex-wrap md:items-center gap-5">
+              <div className="flex-1 space-y-2">
                 <div className="flex gap-1 items-center">
                   <Search className="h-4 w-4  text-muted-foreground" />
-                  <Label className="text-sm font-medium ">Search</Label>
+                  <Label className="text-sm font-medium bg-amber-600 text-pink-600">
+                    Search
+                  </Label>
                 </div>
                 <Input
                   type="text"
@@ -86,21 +102,9 @@ const ProductsCatalog = ({
               </div>
             </div>
           </div>
-        </div>
+        </aside>
 
-        <div className=" col-span-3 p-3">
-          <div>
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
-              <div>
-                <h1 className="text-2xl font-bold tracking-tight">
-                  {category.trim() ? category.toLocaleUpperCase() : "Catalog"}
-                </h1>
-                <p className="text-muted-foreground mt-1">
-                  Showing {allProducts.length} products
-                </p>
-              </div>
-            </div>
-          </div>
+        <main className="flex-1">
           {loadingProducts ? (
             <div className="flex flex-col items-center justify-center min-h-[400px] border-2 border-dashed rounded-xl">
               <p className="text-muted-foreground font-medium text-lg">
@@ -123,14 +127,13 @@ const ProductsCatalog = ({
               </button>
             </div>
           ) : (
-            <div className="flex flex-wrap gap-5 justify-center md:justify-start">
-              {/* grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {allProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           )}
-        </div>
+        </main>
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import { Product } from "./ProductsList";
 import Image from "next/image";
 import { Eye } from "lucide-react";
 import { Button } from "../ui/button";
+import { TooltipTrigger, TooltipContent, Tooltip } from "../ui/tooltip";
 
 interface ViewProductProps {
   data: Product;
@@ -20,12 +21,8 @@ const QuickView = ({ data }: ViewProductProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="flex-1 rounded-lg font-bold gap-2 text-xs p-5"
-        >
-          <Eye className="h-4 w-4" /> Quick View
+        <Button variant="outline" size="sm" className="rounded-md text-xs p-5">
+          <Eye className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-auto">

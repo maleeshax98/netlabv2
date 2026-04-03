@@ -7,7 +7,6 @@ const ShoppingCart = () => {
   const { cart, isLoading, cartFetchError } = useCart();
 
   useEffect(() => {
-    console.log(cartFetchError);
     if (cartFetchError) {
       toast.error(cartFetchError.message);
     }

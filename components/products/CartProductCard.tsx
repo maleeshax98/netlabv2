@@ -51,6 +51,7 @@ const CartProductCard = ({ item }: { item: any }) => {
               variant="outline"
               size="icon"
               onClick={() => {
+                setQuantity((prev) => prev - 1);
                 handleUpdateCart("decrement");
               }}
               disabled={isUpdating || quantity === 1}
@@ -62,6 +63,8 @@ const CartProductCard = ({ item }: { item: any }) => {
               variant="outline"
               size="icon"
               onClick={() => {
+                setQuantity((prev) => prev + 1);
+
                 handleUpdateCart("increment");
               }}
               disabled={isUpdating || item.product.availableStock <= 0}
