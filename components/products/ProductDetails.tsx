@@ -46,6 +46,7 @@ const ProductDetails = ({ id, category }: { id: string; category: string }) => {
 
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState(null);
+  
 
   useEffect(() => {
     if (data) {
@@ -75,6 +76,8 @@ const ProductDetails = ({ id, category }: { id: string; category: string }) => {
   const handleAddToCart = async () => {
     await addToCart(product.id);
   };
+
+  
 
   return (
     <div className="max-w-7xl mx-auto p-6 lg:p-12 grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -137,12 +140,12 @@ const ProductDetails = ({ id, category }: { id: string; category: string }) => {
         </div>
 
         <div className="flex items-baseline gap-3 mb-6">
-          <span className="text-3xl font-bold">Rs. {product?.price}</span>
+          <span className="text-3xl font-bold">Rs. {product?.price * (1 - product?.discounts[0]?.discountPercentage / 100)}</span>
           <span className="text-muted-foreground line-through text-lg">
-            $599.00
+            Rs. {product?.price}
           </span>
           <Badge className="bg-green-600 hover:bg-green-600 text-white border-none rounded-full">
-            20% OFF
+            {product?.discounts[0]?.discountPercentage}% OFF
           </Badge>
         </div>
 

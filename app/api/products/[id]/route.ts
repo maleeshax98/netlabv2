@@ -11,13 +11,26 @@ export async function GET(
 ) {
   const { id } = await params;
 
+  const today = new Date();
   const product = await prisma.product.findUnique({
     where: {
       id: id,
     },
     include: {
       category: true,
-      discounts: true,
+      discounts: {
+        where: {
+          startDate: {
+            lte: today,
+          },
+          endDate: {
+            gt: today,
+          },
+        },
+        orderBy:{
+          createdAt: 'desc'
+        }
+      },
     },
   });
 
