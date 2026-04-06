@@ -27,12 +27,13 @@ import {
 } from "@/components/ui/sheet";
 import { ModeToggle } from "../ModeToggle";
 import ShoppingCart from "../ShoppingCart";
-import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 import CustomUserButton from "../auth/CustomUserButton";
+
 export function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false); // Mobile sheet state
+  const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -40,7 +41,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile sheet on route change
   React.useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
@@ -88,18 +88,21 @@ export function Navbar() {
                       </NavigationMenuContent>
                     </>
                   ) : (
-                    <Link href={item.href} passHref>
-                      <NavigationMenuLink
+                    /* FIXED: Using asChild to prevent nested <a> tags */
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={item.href}
                         className={cn(
                           navigationMenuTriggerStyle(),
-                          "bg-transparent",
-                          pathname === item.href &&
-                            "text-primary font-semibold",
+                          "bg-transparent transition-colors",
+                          pathname === item.href
+                            ? "text-primary font-semibold"
+                            : "text-muted-foreground hover:text-primary",
                         )}
                       >
                         {item.title}
-                      </NavigationMenuLink>
-                    </Link>
+                      </Link>
+                    </NavigationMenuLink>
                   )}
                 </NavigationMenuItem>
               ))}
@@ -110,32 +113,26 @@ export function Navbar() {
         {/* Right: Search & Actions */}
         <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
           <div className="flex items-center gap-1 md:gap-2">
-            <div>
-              <Button className="p-5 cursor-pointer">
-                Netlab Studio <ArrowRight />
-              </Button>
-            </div>
+            <Button className="p-5 cursor-pointer">
+              Netlab Studio <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+
             <ModeToggle />
 
-            <div>
-              <header className="flex justify-end items-center p-4 gap-4 h-16">
-                <Show when="signed-out">
-                  <SignInButton oauthFlow="popup">
-                    <Button variant="ghost" size="icon" className="">
-                      <User className="h-5 w-5" />
-                    </Button>
-                  </SignInButton>
-                  {/* <SignUpButton /> */}
-                </Show>
-                <Show when="signed-in">
-                  {/* <UserButton /> */}
-                  <CustomUserButton />
-                </Show>
-              </header>
+            <div className="flex items-center">
+              <Show when="signed-out">
+                <SignInButton mode="modal">
+                  <Button variant="ghost" size="icon">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </SignInButton>
+              </Show>
+              <Show when="signed-in">
+                <CustomUserButton />
+              </Show>
             </div>
-            <div>
-              <ShoppingCart />
-            </div>
+
+            <ShoppingCart />
 
             {/* Mobile/Tablet Menu */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -148,7 +145,7 @@ export function Navbar() {
                 side="left"
                 className="flex flex-col w-[85vw] max-w-[400px] p-0"
               >
-                <SheetHeader className="p-6 border-b">
+                <SheetHeader className="p-6 border-b text-left">
                   <SheetTitle className="flex items-center space-x-2">
                     <Cpu className="h-6 w-6 text-primary" />
                     <span>Netlab</span>
@@ -203,27 +200,31 @@ export function Navbar() {
   );
 }
 
+/**
+ * ListItem component for NavigationMenu dropdowns.
+ * Uses React.forwardRef and asChild for proper DOM structure and accessibility.
+ */
 const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+  HTMLAnchorElement,
+  React.ComponentPropsWithoutRef<typeof Link> & { title: string }
+>(({ className, title, children, href, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
+        <Link
           ref={ref}
+          href={href}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all",
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className,
           )}
           {...props}
         >
           <div className="text-sm font-semibold leading-none">{title}</div>
-          <br />
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+          <p className="line-clamp-2 mt-1 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   );

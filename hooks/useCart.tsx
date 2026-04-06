@@ -58,5 +58,7 @@ export const useCart = () => {
 
     addToCart: addToCartMutation.mutateAsync,
     isAddingToCart: addToCartMutation.isPending,
+
+    variables: mutation.variables,
   };
 };

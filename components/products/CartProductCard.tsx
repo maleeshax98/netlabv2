@@ -8,7 +8,7 @@ import { useCart } from "@/hooks/useCart";
 const CartProductCard = ({ item }: { item: any }) => {
   const [quantity, setQuantity] = useState(item.quantity);
 
-  const { updateCart, isUpdating } = useCart();
+  const { updateCart, isUpdating, variables } = useCart();
 
   const handleUpdateCart = async (action: string) => {
     await updateCart({
@@ -21,6 +21,8 @@ const CartProductCard = ({ item }: { item: any }) => {
   useEffect(() => {
     setQuantity(item.quantity);
   }, [item.quantity]);
+
+  console.log(variables);
 
   return (
     <div>
@@ -58,7 +60,13 @@ const CartProductCard = ({ item }: { item: any }) => {
             >
               <Minus className="h-4 w-4" />
             </Button>
-            <span className="text-sm font-medium">{quantity}</span>
+            <span
+              className={`text-sm font-medium ${
+                isUpdating && "opacity-50"
+              }`}
+            >
+              {quantity}
+            </span>
             <Button
               variant="outline"
               size="icon"
