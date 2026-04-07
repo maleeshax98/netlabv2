@@ -42,9 +42,8 @@ export default function RootLayout({
           <QueryProvider>
             <SidebarProvider>
               <TooltipProvider>
-                {/* <AppSidebar /> */}
                 {/* <div className="relative flex justify-center items-center min-h-screen flex-col"> */}
-                <SmoothScroll>
+                {/* <SmoothScroll> */}
                   <ClerkProvider>
                     {" "}
                     <div className="w-full flex flex-col">
@@ -53,7 +52,7 @@ export default function RootLayout({
                     </div>
                   </ClerkProvider>
                   {/* <Footer /> */}
-                </SmoothScroll>
+                {/* </SmoothScroll> */}
                 {/* </div> */}
                 <Toaster />
               </TooltipProvider>
